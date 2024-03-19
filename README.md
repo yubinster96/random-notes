@@ -24,3 +24,69 @@ random notes on bias, variance, overfitting, underfitting, good fit, ridge and l
 #use when have many variables re smaller data smaples, model does not encourage convergence towards zero but likely to make them closer to 0 and prevent overfitting
 #lasso regression: modifies over or underfitted models by adding penalty equiv to sum of absolute values of coefficients
 #use when fitting linear model with fewer variables
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+import pandas as pd
+
+# URL of the Boston housing dataset
+boston_dataset_url = "http://lib.stat.cmu.edu/datasets/boston"
+
+# Load the dataset into a DataFrame
+boston_pd = pd.read_csv(boston_dataset_url)
+
+# Manually specify the column names based on the dataset description
+column_names = [
+    'CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX',
+    'PTRATIO', 'B', 'LSTAT', 'MEDV'
+]
+
+# Assign the column names to the DataFrame
+boston_pd.columns = column_names
+
+# Display the DataFrame
+print(boston_pd.head())
+
+raw_df.columns = raw_df.columns
+boston_pd=pd.DataFrame(raw_df.data)
+boston_pd.columns=raw_df.feature_names
+
+#apply multiple linear regression model
+lreg=LinearRegression()
+lreg.fit(x_train,y_train)
+
+#prediction on test
+lreg_y_pred=lreg.predict(x_test)
+
+#mse
+mean_squared_error=np.mean((lreg_y_pred-y_test)**2)
+print("Mean squared error on test set:",mean_squared_error)
+
+
+#putting toether coefficient and t heir corresponding variable names
+lreg_coefficient=pd.Datafram()
+lreg_coefficient["Columns"]=x_train.columns
+lreg_coefficient["Coefficient Estimate"]=pd.Series(lreg.coef_)
+print(lreg_coefficient)
+
+from sklearn.linear_model import Ridge
+
+#train model
+ridgeR = Ridge(alpha=1)
+ridgeR.fit(x_train,y_train)
+y_pred=ridgeR.predict(x_test)
+
+#calculate mean square error
+mean_squared_error_ridge=np.mean((y_pred-y_test)**2)
+print("Mean Squared error on test set:" , mean_squared_error_ridge)
+
+#get ridge coefficient and print them
+ridge_coefficient=pd.DataFram()
+ridge_coefficient["Columns"]=x_train.columns
+ridge_coefficient["Coefficient Estimate"]=pd.Series(ridgeR.coef_)
+print(ridge_coefficient)
